@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Celeste &amp; Daniel · 24.10.2026</title>
+<meta name="description" content="¡Nos casamos! Tocá el sobre para abrir la invitación.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Celeste &amp; Daniel · 24.10.2026">
+<meta property="og:description" content="¡Nos casamos! Tocá el sobre para abrir la invitación.">
+<meta property="og:image" content="https://dakuka.github.io/invitacion/img/og.jpg?v=3">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://dakuka.github.io/invitacion/">
+<link rel="icon" type="image/png" href="img/icono.png">
+<meta name="theme-color" content="#F4F4F4">
+<link rel="preload" href="fonts/forum.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  /* Letra Forum servida desde la propia pagina (antes Google Fonts: dos dominios mas y una hoja que frenaba el dibujo).
+     Es el mismo archivo latin que Google manda a los celulares, misma unicode-range. Licencia OFL. */
+  @font-face { font-family: 'Forum'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url(fonts/forum.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  /* Todo se mide en puntos del PDF original de Historias: 1000 pt = ancho de la invitacion */
+  :root {
+    --W: min(100vw, 520px);
+    --u: calc(var(--W) / 1000);
+    --azul: #23254E;      /* textos azules y botones del PDF */
+    --gris: #616161;      /* textos grises del PDF */
+    --sobre: #010D3D;     /* sobre fisico */
+    --pliegue: #364064;   /* lineas del sobre fisico */
+    --lacre: #9D7C5A;     /* lacre del sobre fisico */
+    --margen: #28344E;    /* azul de los margenes de la invitacion */
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--margen); -webkit-tap-highlight-color: transparent; }
+  body.cerrado { overflow: hidden; height: 100%; }
+
+  /* ---------------- Invitacion (capas del PDF original) ---------------- */
+  .inv { position: relative; width: var(--W); margin: 0 auto; font-family: 'Forum', serif; }
+  .inv .fondo { display: block; width: 100%; height: auto; }
+  .b { position: absolute; left: calc(150 * var(--u)); width: calc(700 * var(--u)); display: block; }
+  .rev { opacity: 0; transform: translateY(calc(22 * var(--u))); transition: opacity 1.1s ease, transform 1.1s ease; }
+  .rev.vis { opacity: 1; transform: none; }
+
+  .pildora {
+    position: absolute; display: flex; align-items: center; justify-content: center;
+    height: calc(46.5 * var(--u)); border: calc(1.735 * var(--u)) solid var(--azul); border-radius: 999px;
+    color: var(--gris); text-decoration: none; font-size: calc(18.6 * var(--u)); letter-spacing: .24em; padding-left: .24em;
+    -webkit-text-stroke: calc(.707 * var(--u)) currentColor;
+  }
+  .toque { position: absolute; display: block; border-radius: 999px; }
+  .toque:active, .pildora:active { background: rgba(35, 37, 78, .08); }
+
+  /* Cuenta regresiva, en la misma letra y colores del PDF */
+  .cuenta { position: absolute; left: 0; width: 100%; top: calc(2090 * var(--u)); height: calc(300 * var(--u)); text-align: center; color: var(--gris); -webkit-text-stroke: calc(.707 * var(--u)) currentColor; }
+  .cuenta .raya { position: absolute; left: calc(466.8 * var(--u)); width: calc(66.4 * var(--u)); top: calc(40 * var(--u)); height: calc(1.735 * var(--u)); background: var(--azul); }
+  .cuenta .titulo { position: absolute; left: 0; width: 100%; top: calc(82 * var(--u)); font-size: calc(28.5 * var(--u)); letter-spacing: .24em; padding-left: .24em; line-height: 1; }
+  .cuenta .fila { position: absolute; left: calc(170 * var(--u)); width: calc(660 * var(--u)); top: calc(140 * var(--u)); display: flex; }
+  .cuenta .col { width: 25%; position: relative; }
+  .cuenta .col + .col::before { content: ""; position: absolute; left: 0; top: calc(2 * var(--u)); width: calc(2.215 * var(--u)); height: calc(118 * var(--u)); background: var(--azul); }
+  .cuenta .num { display: block; font-size: calc(72 * var(--u)); line-height: 1; color: var(--azul); letter-spacing: .06em; padding-left: .06em; }
+  .cuenta .lbl { display: block; margin-top: calc(14 * var(--u)); font-size: calc(20 * var(--u)); letter-spacing: .24em; padding-left: .24em; }
+
+
+  /* Cronograma: el sello baja por la linea al hacer scroll y va encendiendo cada momento */
+  .crono { position: absolute; left: 0; width: 100%; height: calc(760 * var(--u)); text-align: center; color: var(--gris); -webkit-text-stroke: calc(.707 * var(--u)) currentColor; }
+  .crono .raya { position: absolute; left: calc(466.8 * var(--u)); width: calc(66.4 * var(--u)); top: calc(40 * var(--u)); height: calc(1.735 * var(--u)); background: var(--azul); }
+  .crono .titulo { position: absolute; left: 0; width: 100%; top: calc(82 * var(--u)); font-size: calc(28.5 * var(--u)); letter-spacing: .24em; padding-left: .24em; line-height: 1; }
+  .crono .linea { position: absolute; left: calc(499 * var(--u)); width: calc(2.2 * var(--u)); background: rgba(35, 37, 78, .16); }
+  .crono .relleno { position: absolute; left: 0; top: 0; width: 100%; height: 0; background: var(--azul); }
+  .crono .it { position: absolute; left: 0; width: 100%; height: calc(40 * var(--u)); }
+  .crono .hora { position: absolute; right: calc(545 * var(--u)); top: calc(-1 * var(--u)); font-size: calc(40 * var(--u)); line-height: 1; color: var(--azul); letter-spacing: .05em; opacity: .3; transition: opacity .6s ease; }
+  .crono .ev { position: absolute; left: calc(545 * var(--u)); top: calc(9 * var(--u)); font-size: calc(23 * var(--u)); line-height: 1; letter-spacing: .2em; white-space: nowrap; opacity: .3; transition: opacity .6s ease; }
+  .crono .punto { position: absolute; left: calc(491 * var(--u)); top: calc(10 * var(--u)); width: calc(18 * var(--u)); height: calc(18 * var(--u)); border-radius: 50%;
+    background: #fbfaf8; border: calc(2.2 * var(--u)) solid rgba(35, 37, 78, .3); transition: all .5s ease; }
+  .crono .it.on .hora, .crono .it.on .ev { opacity: 1; }
+  .crono .it.on .punto { background: var(--azul); border-color: var(--azul); }
+  .crono .sello { position: absolute; left: calc(470 * var(--u)); top: 0; width: calc(60 * var(--u)); height: calc(60 * var(--u)); margin-top: calc(-30 * var(--u)); border-radius: 50%; z-index: 2;
+    background: var(--lacre); box-shadow: inset 0 0 0 calc(1.6 * var(--u)) #8B6C4C, 0 calc(2 * var(--u)) calc(5 * var(--u)) rgba(0, 0, 0, .28); will-change: transform; }
+  .crono .sello::before { content: ""; position: absolute; inset: 7%; border-radius: 50%; border: calc(.8 * var(--u)) solid #85664A; }
+  .cdr { position: absolute; inset: 15%; filter: drop-shadow(calc(-.7 * var(--u)) calc(-.7 * var(--u)) 0 rgba(242, 222, 192, .55)) drop-shadow(calc(.7 * var(--u)) calc(.7 * var(--u)) 0 rgba(66, 44, 24, .4)); }
+  .cdr::before { content: ""; position: absolute; inset: 0; background: #8C6C4E; -webkit-mask: url(img/monograma_lacre.png) center / contain no-repeat; mask: url(img/monograma_lacre.png) center / contain no-repeat; }
+
+
+  /* Musica: boton flotante de pausa / play (44 px, dentro de la columna de la invitacion) */
+  #musica { position: fixed; bottom: calc(16px + env(safe-area-inset-bottom)); right: max(14px, calc(50% - var(--W) / 2 + 14px)); z-index: 45; width: 44px; height: 44px; border-radius: 50%;
+    border: 1.5px solid var(--lacre); background: rgba(35, 37, 78, .9); box-shadow: 0 3px 10px rgba(10, 14, 30, .35); padding: 0; cursor: pointer; display: none;
+    align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
+  #musica.ver { display: flex; }
+  #musica svg { width: 18px; height: 18px; fill: #e2cfaa; }
+  #musica .ic-play { display: none; } #musica.pausada .ic-play { display: block; } #musica.pausada .ic-pausa { display: none; }
+  #musica:not(.pausada)::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 1px solid rgba(157, 124, 90, .55); animation: onda-musica 2.4s ease-out infinite; }
+  @keyframes onda-musica { from { transform: scale(.85); opacity: 1; } to { transform: scale(1.35); opacity: 0; } }
+
+  /* ---------------- Sobre de entrada (igual al sobre fisico) ---------------- */
+  #intro {
+    position: fixed; inset: 0; z-index: 50; background: #F4F4F4; display: flex; flex-direction: column;
+    align-items: center; justify-content: flex-end; padding-bottom: 16vh; cursor: pointer;
+    transition: opacity .9s ease; font-family: 'Forum', serif;
+  }
+  #intro.fuera { opacity: 0; pointer-events: none; }
+  .sobre {
+    --sw: min(84vw, 400px); position: relative; width: var(--sw); height: calc(var(--sw) / 1.42);
+    perspective: 1100px;
+  }
+  .interior { position: absolute; inset: 0; background: #000A31; box-shadow: 0 12px 24px rgba(1, 13, 61, .28); }
+  .caja-carta { position: absolute; z-index: 2; left: 6%; width: 88%; bottom: 2px; height: 400%; overflow: hidden; } /* 2px: que la tarjeta no asome como una linea en el borde de abajo */
+  .carta {
+    position: absolute; left: 0; width: 100%; top: calc(75% + 5%); /* arranca adentro del sobre */
+    transition: transform 1.2s cubic-bezier(.3, .0, .2, 1);
+  }
+  .bolsillo { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; }
+  .solapa {
+    position: absolute; left: 0; top: 0; width: 100%; height: 58%; z-index: 4;
+    transform-origin: 50% 0; transform-style: preserve-3d; -webkit-transform-style: preserve-3d;
+    transition: transform .85s cubic-bezier(.45, .05, .25, 1);
+  }
+  .cara { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .cara svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .dorso { transform: rotateX(180deg); }
+  .lacre {
+    position: absolute; left: 50%; top: 100%; width: calc(var(--sw) * .27); height: calc(var(--sw) * .27); transform: translate(-50%, -52%);
+    border-radius: 50%; background: var(--lacre);
+    box-shadow: inset 0 0 0 calc(var(--sw) * .006) #8B6C4C, 0 2px 4px rgba(0, 0, 0, .25);
+  }
+  .lacre::before { content: ""; position: absolute; inset: 6.5%; border-radius: 50%; border: calc(var(--sw) * .004) solid #85664A; }
+  /* CD del lacre: monograma de Historias (trazo lleno fino, img/monograma_lacre.png) en el mismo tono del lacre, con relieve
+     (brillo arriba a la izquierda, sombra abajo a la derecha): sutil pero legible. Celeste: ni tan escondido ni tan marcado */
+  .lacre .cd { position: absolute; inset: 15%;
+    filter: drop-shadow(calc(var(--sw) * -.0017) calc(var(--sw) * -.0017) 0 rgba(242, 222, 192, .55)) drop-shadow(calc(var(--sw) * .0017) calc(var(--sw) * .0017) 0 rgba(66, 44, 24, .4)); }
+  .lacre .cd::before {
+    content: ""; position: absolute; inset: 0; background: #8C6C4E;
+    -webkit-mask: url(img/monograma_lacre.png) center / contain no-repeat; mask: url(img/monograma_lacre.png) center / contain no-repeat;
+  }
+  .toca { margin: 7vh 0 0; color: #606060; font-size: 13px; letter-spacing: .32em; padding-left: .32em; animation: latido 2.2s ease-in-out infinite; }
+  @keyframes latido { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+
+  #intro.abre .solapa { transform: rotateX(180deg); }
+  #intro.atras .solapa { z-index: 1; }
+  #intro.sube .carta { transform: translateY(-70%); }
+  #intro.abre .toca { opacity: 0; animation: none; transition: opacity .3s; }
+
+  /* ---------------- Tenida elegante: pagina dentro de la pagina con el vestidor ---------------- */
+  #tenida { position: fixed; inset: 0; z-index: 60; background: var(--margen); overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
+    opacity: 0; pointer-events: none; transition: opacity .35s ease; --oro: #B99A63; }
+  #tenida.ver { opacity: 1; pointer-events: auto; }
+  #tenida .hoja { position: relative; width: var(--W); height: calc(1780 * var(--u)); min-height: 100vh; min-height: 100dvh; margin: 0 auto;
+    font-family: 'Forum', serif; color: var(--gris); text-align: center;
+    background: 0 calc(-1280 * var(--u)) / 100% auto no-repeat; -webkit-text-stroke: calc(.707 * var(--u)) currentColor; }
+  #tenida.cargado .hoja { background-image: url(img/fondo.jpg); }   /* se baja recien con "Ver detalles" o con la pagina quieta */
+  #tenida .t { position: absolute; left: 0; width: 100%; letter-spacing: .24em; padding-left: .24em; line-height: 1; }
+  #tenida .titulo { font-size: calc(34 * var(--u)); }
+  #tenida .raya { position: absolute; left: calc(466.8 * var(--u)); width: calc(66.4 * var(--u)); height: calc(1.735 * var(--u)); background: var(--azul); }
+  #tenida .volver { position: absolute; left: calc(130 * var(--u)); top: calc(34 * var(--u)); z-index: 20; padding: calc(10 * var(--u)) calc(16 * var(--u));
+    background: none; border: 0; cursor: pointer; font-family: inherit; font-size: calc(17 * var(--u)); letter-spacing: .2em; color: var(--azul); -webkit-text-stroke: inherit; }
+  #tenida .pista { font-size: calc(17 * var(--u)); letter-spacing: .28em; padding-left: .28em; animation: latido 2.2s ease-in-out infinite; }
+  #tenida .cols { position: absolute; left: calc(170 * var(--u)); width: calc(660 * var(--u)); display: flex; }
+  #tenida .cols > div { flex: 1; }
+  #tenida .cols > div + div { border-left: calc(2.215 * var(--u)) solid var(--azul); }
+  #tenida .cols .e { display: block; font-size: calc(19 * var(--u)); letter-spacing: .24em; padding-left: .24em; }
+  #tenida .cols .p { display: block; margin-top: calc(16 * var(--u)); font-size: calc(28 * var(--u)); color: var(--azul); letter-spacing: .08em; padding-left: .08em; }
+  #tenida .paleta { position: absolute; left: calc(210 * var(--u)); width: calc(580 * var(--u)); top: calc(1215 * var(--u)); mix-blend-mode: multiply; }
+  #tenida .mono { position: absolute; left: calc(410 * var(--u)); width: calc(180 * var(--u)); height: calc(240 * var(--u)); background: #8e8e8e; /* un poco mas legible (pedido de Daniel 24-sep), mismo grabado */
+    -webkit-mask: center / contain no-repeat; mask: center / contain no-repeat;
+    filter: drop-shadow(1px 1px 0 rgba(255, 255, 255, .9)) drop-shadow(-1px -1px 1px rgba(0, 0, 0, .12)); }
+  #tenida.cargado .mono { -webkit-mask-image: url(img/monograma.png); mask-image: url(img/monograma.png); }
+  /* placard de 780 x 582 (proporcion del dibujo); puertas = el mismo azul C&D de la invitacion y a la misma escala */
+  #tenida .armario { position: absolute; left: calc(110 * var(--u)); top: calc(270 * var(--u)); width: calc(780 * var(--u)); height: calc(582 * var(--u));
+    perspective: calc(2200 * var(--u)); cursor: pointer; -webkit-text-stroke: 0; }
+  #tenida .fondo-armario { position: absolute; inset: 0; background: #f7f5f1; box-shadow: inset 0 0 calc(40 * var(--u)) rgba(35, 37, 78, .18); }
+  #tenida .ropa { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity .6s ease .35s; mix-blend-mode: multiply; }
+  #tenida .abierto .ropa { opacity: 1; }
+  #tenida .puerta { position: absolute; top: 0; width: 50%; height: 100%; background: var(--margen) 0 0 / calc(780 * var(--u)) auto no-repeat; background-origin: border-box;
+    border: calc(3 * var(--u)) solid var(--oro); transition: transform 1.3s cubic-bezier(.55, .05, .25, 1); transform-style: preserve-3d;
+    box-shadow: 0 calc(8 * var(--u)) calc(22 * var(--u)) rgba(10, 14, 30, .35); }
+  #tenida.cargado .puerta { background-image: url(img/azul_puertas.jpg); }
+  #tenida .puerta::before { content: ""; position: absolute; inset: calc(22 * var(--u)); border: calc(1.6 * var(--u)) solid rgba(185, 154, 99, .75); pointer-events: none; }
+  #tenida .puerta.izq { left: 0; transform-origin: 0 50%; }
+  #tenida .puerta.der { right: 0; transform-origin: 100% 50%; background-position: calc(-390 * var(--u)) 0; }
+  #tenida .abierto .puerta.izq { transform: rotateY(-112deg); }
+  #tenida .abierto .puerta.der { transform: rotateY(112deg); }
+  #tenida .manija { position: absolute; top: 47%; width: calc(26 * var(--u)); height: calc(26 * var(--u)); border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #f3e2b8, #b99a63 55%, #7d6236); box-shadow: 0 1px 3px rgba(0, 0, 0, .5); }
+  #tenida .izq .manija { right: calc(22 * var(--u)); }
+  #tenida .der .manija { left: calc(22 * var(--u)); }
+  #tenida .prenda { position: absolute; top: 18%; height: 72%; background: none; border: 0; padding: 0; cursor: pointer; display: none; }
+  #tenida .abierto .prenda { display: block; }
+  #tenida .etq { position: absolute; top: 3%; transform: translateX(-50%) scale(.6); opacity: 0; transition: all .35s cubic-bezier(.2, .8, .2, 1.2); pointer-events: none;
+    background: #fff; color: var(--azul); border: calc(1.735 * var(--u)) solid var(--azul); border-radius: 999px; padding: calc(8 * var(--u)) calc(22 * var(--u));
+    font-size: calc(19 * var(--u)); letter-spacing: .18em; white-space: nowrap; box-shadow: 0 calc(4 * var(--u)) calc(12 * var(--u)) rgba(35, 37, 78, .2); }
+  #tenida .etq.ver { opacity: 1; transform: translateX(-50%) scale(1); }
+  #tenida .etq small { display: block; font-size: calc(13 * var(--u)); color: var(--gris); letter-spacing: .16em; margin-top: calc(4 * var(--u)); }
+</style>
+</head>
+<body class="cerrado">
+
+<!-- ================= Sobre de entrada ================= -->
+<div id="intro" role="button" aria-label="Tocá el sobre para abrir la invitación">
+  <div class="sobre">
+    <div class="interior"></div>
+    <div class="caja-carta"><img class="carta" src="img/tarjeta.webp" alt="" fetchpriority="high"></div>
+    <svg class="bolsillo" viewBox="0 0 142 100" preserveAspectRatio="none" aria-hidden="true">
+      <rect width="142" height="100" fill="#010D3D"/>
+      <path d="M0 100 L71 55 L142 100" fill="none" stroke="#364064" stroke-width="1" vector-effect="non-scaling-stroke"/>
+      <path d="M0 0 L60 49 M142 0 L82 49" fill="none" stroke="#364064" stroke-width="1" vector-effect="non-scaling-stroke" opacity=".7"/>
+    </svg>
+    <div class="solapa">
+      <div class="cara frente">
+        <svg viewBox="0 0 142 58" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 0 L71 58 L142 0 Z" fill="#010D3D" stroke="#364064" stroke-width="1" vector-effect="non-scaling-stroke"/>
+        </svg>
+        <div class="lacre"><span class="cd"></span></div>
+      </div>
+      <div class="cara dorso">
+        <svg viewBox="0 0 142 58" preserveAspectRatio="none" aria-hidden="true">
+          <defs><clipPath id="forroClip"><path d="M9 55 L71 7 L133 55 Z"/></clipPath></defs>
+          <path d="M0 58 L71 0 L142 58 Z" fill="#010D3D"/>
+          <image href="img/forro.jpg" x="0" y="-6" width="142" height="80" preserveAspectRatio="xMidYMid slice" clip-path="url(#forroClip)"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <p class="toca">TOCÁ PARA ABRIR</p>
+</div>
+
+<button id="musica" class="pausada" aria-label="Pausar o reproducir la música">
+  <svg class="ic-pausa" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+  <svg class="ic-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
+</button>
+
+<!-- ================= Invitacion ================= -->
+<main class="inv">
+  <img class="fondo" src="img/fondo_crono.webp" alt="" fetchpriority="high" decoding="async">
+
+  <img class="b rev" src="img/b01.webp" style="top: calc(1150 * var(--u))" alt="¡Nos casamos!">
+  <img class="b rev" src="img/b02.webp" style="top: calc(1290 * var(--u))" alt="Celeste &amp; Daniel">
+  <img class="b rev" src="img/b03.webp" style="top: calc(1590 * var(--u))" alt="Te invitamos a nuestra ceremonia y recepción a celebrarse el">
+  <img class="b rev" src="img/b04.webp" style="top: calc(1830 * var(--u))" alt="Sábado 24 de octubre a las 17 horas">
+
+  <section class="cuenta rev" aria-label="Cuenta regresiva">
+    <div class="raya"></div>
+    <div class="titulo">FALTAN</div>
+    <div class="fila">
+      <div class="col"><span class="num" id="cd-d">00</span><span class="lbl">DÍAS</span></div>
+      <div class="col"><span class="num" id="cd-h">00</span><span class="lbl">HORAS</span></div>
+      <div class="col"><span class="num" id="cd-m">00</span><span class="lbl">MINUTOS</span></div>
+      <div class="col"><span class="num" id="cd-s">00</span><span class="lbl">SEGUNDOS</span></div>
+    </div>
+  </section>
+
+  <!-- Cronograma -->
+  <section class="crono" id="crono" style="top: calc(2418.33 * var(--u))" aria-label="Cronograma">
+    <div class="raya rev"></div>
+    <div class="titulo rev">CRONOGRAMA</div>
+    <div class="linea" id="linea" style="top: calc(195 * var(--u)); height: calc(472 * var(--u))"><div class="relleno" id="relleno"></div></div>
+    <div class="it" style="top: calc(175 * var(--u))"><span class="hora">17:00</span><span class="punto"></span><span class="ev">LLEGADA DE INVITADOS</span></div>
+    <div class="it" style="top: calc(293 * var(--u))"><span class="hora">17:20</span><span class="punto"></span><span class="ev">CEREMONIA CIVIL</span></div>
+    <div class="it" style="top: calc(411 * var(--u))"><span class="hora">19:00</span><span class="punto"></span><span class="ev">CENA</span></div>
+    <div class="it" style="top: calc(529 * var(--u))"><span class="hora">20:00</span><span class="punto"></span><span class="ev">BAILE</span></div>
+    <div class="it" style="top: calc(647 * var(--u))"><span class="hora">21:00</span><span class="punto"></span><span class="ev">SORPRESA!</span></div>
+    <div class="sello" id="sello" style="top: calc(195 * var(--u))"><span class="cdr"></span></div>
+  </section>
+
+
+  <img class="b rev" src="img/b05.webp" style="top: calc(3221.67 * var(--u))" alt="Casa Puente, Mariano Roque Alonso, 2026">
+  <img class="b rev" src="img/b06.webp" style="top: calc(3401.67 * var(--u))" alt="">
+  <a class="toque" href="https://www.google.com/maps/search/?api=1&amp;query=Casa+Puente+Avenida+Paseo+de+Fatima+464+Mariano+Roque+Alonso" target="_blank" rel="noopener"
+     style="left: calc(379.1 * var(--u)); width: calc(241.8 * var(--u)); top: calc(3424.97 * var(--u)); height: calc(46.5 * var(--u))" aria-label="Ver ubicación"></a>
+  <img class="b rev" src="img/b07.webp" style="top: calc(3571.67 * var(--u))" alt="">
+  <img class="b rev" src="img/b08.webp" style="top: calc(3771.67 * var(--u))" alt="Tenida elegante">
+  <a class="toque" href="#tenida" id="abrir-tenida" style="left: calc(379.1 * var(--u)); width: calc(241.8 * var(--u)); top: calc(3858.27 * var(--u)); height: calc(46.5 * var(--u))" aria-label="Ver detalles de la tenida"></a>
+  <img class="b rev" src="img/b09.webp" style="top: calc(3971.67 * var(--u))" alt="">
+  <img class="b rev" src="img/b10.webp" style="top: calc(4051.67 * var(--u))" alt="Favor confirmar asistencia">
+  <img class="b rev" src="img/b11.webp" style="top: calc(4191.67 * var(--u))" alt="">
+  <a class="toque" href="https://wa.me/595982330028?text=Hola!%20Confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Celeste%20%26%20Daniel%20(24%2F10)%0A%0ACantidad%20de%20personas%3A%20%0ANombre%20y%20apellido%20de%20cada%20uno%3A%20" target="_blank" rel="noopener"
+     style="left: calc(379.1 * var(--u)); width: calc(241.8 * var(--u)); top: calc(4210.47 * var(--u)); height: calc(46.5 * var(--u))" aria-label="Confirmar asistencia por WhatsApp al 0982 330 028"></a>
+  <img class="b rev" src="img/b12.webp" style="top: calc(4421.67 * var(--u))" alt="Lista de Bodas">
+
+  <a class="pildora rev" href="https://listaderegalos.nuevaamericana.com.py/3342" target="_blank" rel="noopener"
+     style="left: calc(350 * var(--u)); width: calc(300 * var(--u)); top: calc(4602.67 * var(--u))">NUEVA AMERICANA</a>
+  <a class="pildora rev" href="img/lista_pilar_v2.jpg" target="_blank" rel="noopener"
+     style="left: calc(350 * var(--u)); width: calc(300 * var(--u)); top: calc(4668.67 * var(--u))">PILAR</a>
+  <a class="pildora rev" href="https://tuboda.marketplace.com.py/lista/celeste-niz-y-daniel-kemper" target="_blank" rel="noopener" style="left: calc(350 * var(--u)); width: calc(300 * var(--u)); top: calc(4734.67 * var(--u))">MARKET PLACE</a>
+
+  <img class="b rev" src="img/b13.webp" style="top: calc(4863.67 * var(--u))" alt="Banco GNB, alias C.I. 3.568.826, Daniel Kemper o Celeste Niz">
+</main>
+
+<!-- ================= Tenida elegante: vestidor (se abre con "Ver detalles") ================= -->
+<div id="tenida" role="dialog" aria-label="Tenida elegante" aria-hidden="true">
+  <div class="hoja">
+    <button class="volver" id="volver">‹ VOLVER</button>
+    <div class="t titulo" style="top: calc(140 * var(--u))">TENIDA ELEGANTE</div>
+    <div class="raya" style="top: calc(212 * var(--u))"></div>
+
+    <div class="armario" id="armario" role="button" aria-label="Abrir el vestidor">
+      <div class="fondo-armario"></div>
+      <img class="ropa" data-src="img/vestidor.jpg" alt="Vestidos largos y trajes en los colores sugeridos">
+      <button class="prenda" style="left:10%;  width:12.3%" data-n="VINO"        data-t="VESTIDO LARGO" aria-label="Vino, vestido largo"></button>
+      <button class="prenda" style="left:22.3%;width:10%"   data-n="OLIVA"       data-t="VESTIDO LARGO" aria-label="Oliva, vestido largo"></button>
+      <button class="prenda" style="left:32.3%;width:9.6%"  data-n="AZUL NOCHE"  data-t="VESTIDO LARGO" aria-label="Azul noche, vestido largo"></button>
+      <button class="prenda" style="left:41.9%;width:9.8%"  data-n="MALVA"       data-t="VESTIDO LARGO" aria-label="Malva, vestido largo"></button>
+      <button class="prenda" style="left:51.7%;width:10.8%" data-n="ARENA"       data-t="VESTIDO LARGO" aria-label="Arena, vestido largo"></button>
+      <button class="prenda" style="left:62.5%;width:11.9%" data-n="AZUL NOCHE"  data-t="TRAJE Y CORBATA" aria-label="Azul noche, traje y corbata"></button>
+      <button class="prenda" style="left:74.4%;width:13.9%" data-n="GRIS CARBÓN" data-t="TRAJE Y CORBATA" aria-label="Gris carbón, traje y corbata"></button>
+      <div class="etq" id="etq"></div>
+      <div class="puerta izq"><span class="manija"></span></div>
+      <div class="puerta der"><span class="manija"></span></div>
+    </div>
+    <div class="t pista" id="pista" style="top: calc(890 * var(--u))">TOCÁ PARA ABRIR EL VESTIDOR</div>
+
+    <div class="cols" style="top: calc(990 * var(--u))">
+      <div><span class="e">ELLAS</span><span class="p">VESTIDO LARGO</span></div>
+      <div><span class="e">ELLOS</span><span class="p">TRAJE Y CORBATA</span></div>
+    </div>
+    <div class="t" style="top: calc(1160 * var(--u)); font-size: calc(21 * var(--u))">SUGERENCIA DE COLORES</div>
+    <img class="paleta" data-src="img/paleta.jpg" alt="Paleta de colores sugeridos">
+    <div class="mono" style="top: calc(1500 * var(--u))"></div>
+  </div>
+</div>
+
+<script>
+  // ---------- Musica: Iris (Goo Goo Dolls) ----------
+  // Version liviana (15-oct): al abrir la pagina NO se baja nada de audio. La cancion (MP3 80 kbps, 2,1 MB) empieza a bajar
+  // recien cuando llegaron el fondo y los bloques de la invitacion, asi no les quita velocidad, y se baja UNA sola vez.
+  // - Si el invitado toca el sobre antes de que la cancion este puesta, en TODOS los navegadores el toque "desbloquea" el
+  //   audio con un silencio (data URI, sin red) dentro del mismo toque, y la cancion arranca sola apenas se pone.
+  //   (Los navegadores internos de apps en Android rechazan play() si no hubo un play() dentro del toque.)
+  // - Safari (iPhone, Mac): Cloudflare Pages no responde por rangos, asi que necesita la cancion entera en memoria (blob).
+  // - Android y el resto: suena directo mientras baja; no se pide antes de que llegue la invitacion
+  //   (medido: arrancar con el toque atrasaba el fondo unos 6 s con Wi-Fi flojo).
+  const cancion = new Audio(), btnMusica = document.getElementById('musica');
+  cancion.loop = true; cancion.preload = 'auto';
+  const SILENCIO = 'data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YSADAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA==';
+  const ua = navigator.userAgent;
+  const esSafari = /iPad|iPhone|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1) || (/Safari/.test(ua) && !/Chrome|Chromium|CriOS|FxiOS|Edg|OPR|Android/.test(ua));
+  let fuente = null, puesta = false, pedida = false, quiere = false, pausadaPorSalir = false, musicaBajada = false;
+  function bajarCancion() {                           // Safari: la cancion entera, una sola vez
+    if (pedida) return; pedida = true;
+    fetch('audio/iris.mp3').then(r => r.ok ? r.blob() : Promise.reject())
+      .then(b => { fuente = URL.createObjectURL(b); }, () => { fuente = 'audio/iris.mp3'; })   // sin blob: intento directo
+      .then(() => { musicaLista(); if (quiere) arrancar(); });
+  }
+  function ponerDirecta() {                           // resto: directo (va bajando mientras suena), una sola vez
+    if (puesta) return;
+    fuente = 'audio/iris.mp3'; cancion.src = fuente; puesta = true;
+  }
+  function arrancar() {
+    if (!puesta) { cancion.src = fuente; puesta = true; }
+    if (document.hidden) { pausadaPorSalir = true; return; }
+    const p = cancion.play(); if (p && p.catch) p.catch(() => btnMusica.classList.add('pausada'));
+  }
+  function sonar() {                                  // siempre se llama desde un toque
+    quiere = true;
+    if (fuente) return arrancar();
+    if (!puesta) { cancion.src = SILENCIO; const p = cancion.play(); if (p && p.catch) p.catch(() => {}); }
+  }
+  function invitacionLista() { if (esSafari) bajarCancion(); else { ponerDirecta(); if (quiere) arrancar(); } }
+  const imgsInv = [...document.querySelectorAll('main.inv img.fondo, main.inv img.b')];
+  let faltanInv = imgsInv.length;
+  const unaMenos = () => { if (--faltanInv === 0) invitacionLista(); };
+  imgsInv.forEach(im => { if (im.complete) unaMenos(); else { im.addEventListener('load', unaMenos, { once: true }); im.addEventListener('error', unaMenos, { once: true }); } });
+  // "termino la musica" (para dejar listo el vestidor despues): Safari cuando llega el blob; el resto cuando ya tiene la cancion entera
+  function musicaLista() { if (musicaBajada) return; musicaBajada = true; setTimeout(prepararTenida, 8000); }
+  function revisarBajada() {
+    const b = cancion.buffered, d = cancion.duration;
+    if (!esSafari && puesta && b.length && d && isFinite(d) && b.start(0) <= 0.5 && b.end(b.length - 1) >= d - 0.5) musicaLista();
+  }
+  cancion.addEventListener('progress', revisarBajada); cancion.addEventListener('suspend', revisarBajada);
+  cancion.addEventListener('error', () => { if (!esSafari && puesta) musicaLista(); });
+  cancion.addEventListener('play', () => btnMusica.classList.remove('pausada'));
+  cancion.addEventListener('pause', () => btnMusica.classList.add('pausada'));
+  btnMusica.addEventListener('click', () => { if (cancion.paused) sonar(); else { quiere = false; cancion.pause(); } });
+  document.addEventListener('visibilitychange', () => {       // no sigue sonando en el bolsillo; vuelve al volver
+    if (document.hidden && !cancion.paused) { pausadaPorSalir = true; cancion.pause(); }
+    else if (!document.hidden && pausadaPorSalir) { pausadaPorSalir = false; if (quiere) sonar(); }
+  });
+  if ('mediaSession' in navigator) navigator.mediaSession.metadata = new MediaMetadata({ title: 'Iris', artist: 'Goo Goo Dolls', album: 'Celeste & Daniel · 24.10.2026' });
+
+  // ---------- Sobre ----------
+  const intro = document.getElementById('intro');
+  let abierto = false;
+  function abrir() {
+    if (abierto) return; abierto = true;
+    sonar(); btnMusica.classList.add('ver');                     // la musica arranca con el toque (requisito de iPhone)
+    intro.classList.add('abre');                                   // se abre la solapa
+    setTimeout(() => intro.classList.add('atras'), 430);           // a mitad de giro la solapa pasa detras de la tarjeta
+    setTimeout(() => intro.classList.add('sube'), 750);            // sale la tarjeta
+    setTimeout(() => { intro.classList.add('fuera'); document.body.classList.remove('cerrado'); window.scrollTo(0, 0); revisar(); }, 2300);
+    setTimeout(() => intro.remove(), 3300);
+    setTimeout(prepararTenida, musicaBajada ? 8000 : 120000);      // vestidor: 8 s despues de la musica (o a los 2 min)
+  }
+  intro.addEventListener('click', abrir);
+  intro.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') abrir(); });
+
+  // ---------- Aparicion suave al bajar ----------
+  const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); }
+  }), { threshold: 0.12 }) : null;
+  function revisar() { document.querySelectorAll('.rev').forEach(el => io ? io.observe(el) : el.classList.add('vis')); }
+
+  // ---------- Tenida elegante (vestidor) ----------
+  const tenida = document.getElementById('tenida'), armario = document.getElementById('armario'), etq = document.getElementById('etq'), pista = document.getElementById('pista');
+  function cargarTenida() {            // las imagenes del vestidor se bajan recien despues de abrir el sobre
+    if (tenida.classList.contains('cargado')) return;
+    tenida.classList.add('cargado');
+    tenida.querySelectorAll('img[data-src]').forEach(im => im.src = im.dataset.src);
+  }
+  function prepararTenida() {          // con la pagina quieta; nunca antes de tocar el sobre
+    if (!abierto) return;
+    if ('requestIdleCallback' in window) requestIdleCallback(cargarTenida, { timeout: 4000 }); else cargarTenida();
+  }
+  function cerrarArmario() { armario.classList.remove('abierto'); etq.classList.remove('ver'); pista.textContent = 'TOCÁ PARA ABRIR EL VESTIDOR'; }
+  function verTenida(v) {
+    tenida.classList.toggle('ver', v); tenida.setAttribute('aria-hidden', v ? 'false' : 'true'); document.body.style.overflow = v ? 'hidden' : '';
+    if (v) { cargarTenida(); tenida.scrollTop = 0; } else setTimeout(cerrarArmario, 400);
+  }
+  // el boton "atras" del celular cierra el vestidor en vez de salir de la invitacion
+  function salir() { if (history.state && history.state.tenida) history.back(); else verTenida(false); }
+  document.getElementById('abrir-tenida').addEventListener('click', e => { e.preventDefault(); history.pushState({ tenida: 1 }, '', '#tenida'); verTenida(true); });
+  window.addEventListener('popstate', () => verTenida(!!(history.state && history.state.tenida)));
+  document.getElementById('volver').addEventListener('click', salir);
+  tenida.addEventListener('click', e => { if (e.target === tenida) salir(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && tenida.classList.contains('ver')) salir(); });
+  armario.addEventListener('click', e => {
+    if (!armario.classList.contains('abierto')) { armario.classList.add('abierto'); pista.textContent = 'TOCÁ CADA PRENDA'; return; }
+    const b = e.target.closest('.prenda'); if (!b) return;
+    const r = b.getBoundingClientRect(), a = armario.getBoundingClientRect();
+    etq.innerHTML = b.dataset.n + '<small>' + b.dataset.t + '</small>';
+    etq.style.left = ((r.left + r.width / 2 - a.left) / a.width * 100) + '%';
+    etq.classList.remove('ver'); void etq.offsetWidth; etq.classList.add('ver');
+  });
+  // link directo al vestidor (.../#tenida): se abre arriba del sobre y VOLVER lleva al sobre
+  if (location.hash === '#tenida') {
+    history.replaceState(null, '', location.pathname + location.search);
+    history.pushState({ tenida: 1 }, '', '#tenida'); verTenida(true);
+  }
+
+  // ---------- Cronograma: el sello baja con el scroll ----------
+  const linea = document.getElementById('linea'), relleno = document.getElementById('relleno'), sello = document.getElementById('sello');
+  const pasos = [...document.querySelectorAll('#crono .it')];
+  let pendiente = false;
+  function cronograma() {
+    pendiente = false;
+    const r = linea.getBoundingClientRect(), meta = innerHeight * 0.58;
+    const p = Math.max(0, Math.min(1, (meta - r.top) / r.height)), y = p * r.height;
+    sello.style.transform = 'translateY(' + y + 'px)'; relleno.style.height = y + 'px';
+    pasos.forEach(it => { const c = it.querySelector('.punto').getBoundingClientRect(); it.classList.toggle('on', c.top + c.height / 2 <= r.top + y + 2); });
+  }
+  addEventListener('scroll', () => { if (!pendiente) { pendiente = true; requestAnimationFrame(cronograma); } }, { passive: true });
+  addEventListener('resize', cronograma); cronograma();
+
+  // ---------- Cuenta regresiva (24-oct-2026, 17:00 hora de Paraguay) ----------
+  const objetivo = new Date('2026-10-24T17:00:00-03:00').getTime();
+  const dos = n => String(n).padStart(2, '0');
+  function tic() {
+    const s = Math.max(0, Math.floor((objetivo - Date.now()) / 1000));
+    document.getElementById('cd-d').textContent = dos(Math.floor(s / 86400));
+    document.getElementById('cd-h').textContent = dos(Math.floor(s % 86400 / 3600));
+    document.getElementById('cd-m').textContent = dos(Math.floor(s % 3600 / 60));
+    document.getElementById('cd-s').textContent = dos(s % 60);
+  }
+  tic(); setInterval(tic, 1000);
+</script>
+</body>
+</html>
