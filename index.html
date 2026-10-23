@@ -94,6 +94,20 @@
   #musica:not(.pausada)::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 1px solid rgba(157, 124, 90, .55); animation: onda-musica 2.4s ease-out infinite; }
   @keyframes onda-musica { from { transform: scale(.85); opacity: 1; } to { transform: scale(1.35); opacity: 0; } }
 
+
+  /* Fotos de los invitados (GuestPix): mismo sistema que la cuenta regresiva */
+  .fotos { position: absolute; left: 0; width: 100%; height: calc(830 * var(--u)); text-align: center; color: var(--gris); -webkit-text-stroke: calc(.707 * var(--u)) currentColor; }
+  .fotos .raya { position: absolute; left: calc(466.8 * var(--u)); width: calc(66.4 * var(--u)); top: calc(40 * var(--u)); height: calc(1.735 * var(--u)); background: var(--azul); }
+  .fotos .tit, .fotos .baj { position: absolute; left: 0; width: 100%; margin: 0; font-weight: 400; }
+  .fotos .tit { top: calc(82 * var(--u)); font-size: calc(28.5 * var(--u)); line-height: calc(54.17 * var(--u)); letter-spacing: .24em; }
+  .fotos .baj { top: calc(222 * var(--u)); font-size: calc(20 * var(--u)); line-height: calc(36 * var(--u)); letter-spacing: .24em; }
+  .fotos .tit span, .fotos .baj span { display: block; padding-left: .24em; white-space: nowrap; }
+  .fotos .qr { position: absolute; left: calc(375 * var(--u)); top: calc(370 * var(--u)); width: calc(250 * var(--u)); height: calc(250 * var(--u)); display: block;
+    border: calc(1.735 * var(--u)) solid var(--azul); background: #fff; }
+  .fotos .qr svg { display: block; width: 100%; height: 100%; }
+  .fotos .pildora { left: calc(350 * var(--u)); width: calc(300 * var(--u)); top: calc(660 * var(--u)); }
+  .fotos .nota { position: absolute; left: 0; width: 100%; top: calc(750 * var(--u)); margin: 0; font-size: calc(18.6 * var(--u)); line-height: 1; letter-spacing: .2em; padding-left: .2em; }
+
   /* ---------------- Sobre de entrada (igual al sobre fisico) ---------------- */
   #intro {
     position: fixed; inset: 0; z-index: 50; background: #F4F4F4; display: flex; flex-direction: column;
@@ -232,7 +246,7 @@
 
 <!-- ================= Invitacion ================= -->
 <main class="inv">
-  <img class="fondo" src="img/fondo_crono.webp" alt="" fetchpriority="high" decoding="async">
+  <img class="fondo" src="img/fondo_fotos.webp" alt="" fetchpriority="high" decoding="async">
 
   <img class="b rev" src="img/b01.webp" style="top: calc(1150 * var(--u))" alt="¡Nos casamos!">
   <img class="b rev" src="img/b02.webp" style="top: calc(1290 * var(--u))" alt="Celeste &amp; Daniel">
@@ -287,6 +301,16 @@
   <a class="pildora rev" href="https://tuboda.marketplace.com.py/lista/celeste-niz-y-daniel-kemper" target="_blank" rel="noopener" style="left: calc(350 * var(--u)); width: calc(300 * var(--u)); top: calc(4866.67 * var(--u))">MARKET PLACE</a>
 
   <img class="b rev" src="img/b13.webp" style="top: calc(4995.67 * var(--u))" alt="Banco GNB, alias C.I. 3.568.826, Daniel Kemper o Celeste Niz">
+
+  <!-- Fotos de los invitados: GuestPix, el mismo QR del menu -->
+  <section class="fotos" style="top: calc(5163.33 * var(--u))" aria-label="Compartí tus fotos y videos de la boda">
+    <div class="raya rev"></div>
+    <p class="tit rev"><span>QUEREMOS VER LA BODA</span><span>DESDE TU PERSPECTIVA</span></p>
+    <p class="baj rev"><span>COMPARTINOS TUS FOTOS Y VIDEOS</span><span>ESCANEANDO ESTE CÓDIGO</span><span>O TOCANDO EL BOTÓN</span></p>
+    <a class="qr rev" href="https://my.guestpix.com/guest/195165/access/PNPGVXBd" target="_blank" rel="noopener" aria-label="Código QR para subir tus fotos y videos"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -4 41 41" shape-rendering="crispEdges"><rect x="-4" y="-4" width="41" height="41" fill="#fff"/><path fill="#23254E" d="M0 0h7v1h-7zM8 0h1v1h-1zM11 0h2v1h-2zM18 0h4v1h-4zM23 0h1v1h-1zM26 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h1v1h-1zM14 1h1v1h-1zM17 1h1v1h-1zM23 1h2v1h-2zM26 1h1v1h-1zM32 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM10 2h1v1h-1zM12 2h3v1h-3zM22 2h1v1h-1zM24 2h1v1h-1zM26 2h1v1h-1zM28 2h3v1h-3zM32 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h5v1h-5zM15 3h1v1h-1zM18 3h1v1h-1zM21 3h2v1h-2zM26 3h1v1h-1zM28 3h3v1h-3zM32 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM10 4h1v1h-1zM12 4h2v1h-2zM16 4h1v1h-1zM20 4h1v1h-1zM23 4h2v1h-2zM26 4h1v1h-1zM28 4h3v1h-3zM32 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM11 5h2v1h-2zM14 5h6v1h-6zM24 5h1v1h-1zM26 5h1v1h-1zM32 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h1v1h-1zM24 6h1v1h-1zM26 6h7v1h-7zM8 7h1v1h-1zM11 7h2v1h-2zM15 7h4v1h-4zM22 7h1v1h-1zM24 7h1v1h-1zM0 8h1v1h-1zM2 8h2v1h-2zM5 8h3v1h-3zM9 8h1v1h-1zM12 8h1v1h-1zM15 8h1v1h-1zM17 8h3v1h-3zM21 8h1v1h-1zM23 8h2v1h-2zM26 8h1v1h-1zM29 8h1v1h-1zM31 8h2v1h-2zM1 9h5v1h-5zM7 9h8v1h-8zM16 9h5v1h-5zM22 9h2v1h-2zM26 9h2v1h-2zM29 9h4v1h-4zM0 10h4v1h-4zM5 10h3v1h-3zM10 10h1v1h-1zM12 10h2v1h-2zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h5v1h-5zM26 10h4v1h-4zM32 10h1v1h-1zM1 11h2v1h-2zM4 11h1v1h-1zM8 11h1v1h-1zM10 11h1v1h-1zM12 11h1v1h-1zM15 11h3v1h-3zM20 11h1v1h-1zM22 11h3v1h-3zM26 11h2v1h-2zM29 11h1v1h-1zM0 12h2v1h-2zM5 12h3v1h-3zM9 12h1v1h-1zM12 12h1v1h-1zM14 12h3v1h-3zM19 12h1v1h-1zM21 12h2v1h-2zM24 12h2v1h-2zM27 12h3v1h-3zM31 12h1v1h-1zM0 13h3v1h-3zM5 13h1v1h-1zM7 13h1v1h-1zM9 13h1v1h-1zM11 13h1v1h-1zM14 13h1v1h-1zM19 13h1v1h-1zM22 13h1v1h-1zM27 13h1v1h-1zM29 13h1v1h-1zM31 13h1v1h-1zM0 14h3v1h-3zM4 14h1v1h-1zM6 14h3v1h-3zM11 14h2v1h-2zM18 14h2v1h-2zM21 14h2v1h-2zM24 14h1v1h-1zM26 14h4v1h-4zM0 15h2v1h-2zM3 15h2v1h-2zM7 15h4v1h-4zM15 15h1v1h-1zM19 15h1v1h-1zM21 15h7v1h-7zM30 15h1v1h-1zM1 16h2v1h-2zM6 16h1v1h-1zM9 16h1v1h-1zM14 16h1v1h-1zM16 16h1v1h-1zM20 16h4v1h-4zM25 16h2v1h-2zM28 16h1v1h-1zM30 16h1v1h-1zM0 17h1v1h-1zM2 17h2v1h-2zM5 17h1v1h-1zM7 17h6v1h-6zM15 17h1v1h-1zM23 17h4v1h-4zM28 17h2v1h-2zM32 17h1v1h-1zM0 18h1v1h-1zM2 18h1v1h-1zM4 18h3v1h-3zM8 18h1v1h-1zM12 18h1v1h-1zM14 18h3v1h-3zM18 18h1v1h-1zM21 18h1v1h-1zM24 18h1v1h-1zM27 18h2v1h-2zM30 18h1v1h-1zM1 19h3v1h-3zM10 19h1v1h-1zM12 19h1v1h-1zM16 19h3v1h-3zM20 19h1v1h-1zM24 19h2v1h-2zM28 19h1v1h-1zM31 19h2v1h-2zM0 20h2v1h-2zM4 20h4v1h-4zM9 20h2v1h-2zM14 20h1v1h-1zM16 20h1v1h-1zM23 20h2v1h-2zM29 20h4v1h-4zM0 21h2v1h-2zM3 21h3v1h-3zM8 21h3v1h-3zM12 21h2v1h-2zM15 21h3v1h-3zM20 21h2v1h-2zM23 21h1v1h-1zM26 21h1v1h-1zM29 21h2v1h-2zM32 21h1v1h-1zM3 22h2v1h-2zM6 22h1v1h-1zM11 22h1v1h-1zM13 22h1v1h-1zM15 22h1v1h-1zM18 22h1v1h-1zM20 22h1v1h-1zM22 22h4v1h-4zM27 22h6v1h-6zM1 23h1v1h-1zM4 23h2v1h-2zM7 23h2v1h-2zM10 23h1v1h-1zM12 23h2v1h-2zM15 23h1v1h-1zM18 23h2v1h-2zM22 23h2v1h-2zM27 23h1v1h-1zM31 23h1v1h-1zM0 24h1v1h-1zM2 24h1v1h-1zM4 24h3v1h-3zM8 24h1v1h-1zM10 24h1v1h-1zM17 24h1v1h-1zM19 24h2v1h-2zM22 24h1v1h-1zM24 24h6v1h-6zM31 24h1v1h-1zM8 25h1v1h-1zM11 25h1v1h-1zM14 25h3v1h-3zM19 25h1v1h-1zM22 25h3v1h-3zM28 25h2v1h-2zM31 25h1v1h-1zM0 26h7v1h-7zM8 26h2v1h-2zM13 26h1v1h-1zM17 26h5v1h-5zM23 26h2v1h-2zM26 26h1v1h-1zM28 26h1v1h-1zM31 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM8 27h1v1h-1zM10 27h3v1h-3zM15 27h4v1h-4zM21 27h2v1h-2zM24 27h1v1h-1zM28 27h4v1h-4zM0 28h1v1h-1zM2 28h3v1h-3zM6 28h1v1h-1zM10 28h2v1h-2zM14 28h1v1h-1zM16 28h4v1h-4zM22 28h7v1h-7zM30 28h1v1h-1zM32 28h1v1h-1zM0 29h1v1h-1zM2 29h3v1h-3zM6 29h1v1h-1zM8 29h2v1h-2zM11 29h1v1h-1zM16 29h1v1h-1zM19 29h2v1h-2zM23 29h1v1h-1zM27 29h1v1h-1zM29 29h1v1h-1zM32 29h1v1h-1zM0 30h1v1h-1zM2 30h3v1h-3zM6 30h1v1h-1zM8 30h3v1h-3zM12 30h1v1h-1zM15 30h3v1h-3zM21 30h1v1h-1zM25 30h3v1h-3zM29 30h2v1h-2zM0 31h1v1h-1zM6 31h1v1h-1zM12 31h2v1h-2zM17 31h3v1h-3zM24 31h6v1h-6zM32 31h1v1h-1zM0 32h7v1h-7zM8 32h4v1h-4zM17 32h3v1h-3zM21 32h1v1h-1zM23 32h1v1h-1zM28 32h1v1h-1zM30 32h1v1h-1z"/></svg></a>
+    <a class="pildora rev" href="https://my.guestpix.com/guest/195165/access/PNPGVXBd" target="_blank" rel="noopener">SUBIR MIS FOTOS</a>
+    <p class="nota rev">SOLO NOSOTROS VAMOS A VER LO QUE SUBAS</p>
+  </section>
 </main>
 
 <!-- ================= Tenida elegante: vestidor (se abre con "Ver detalles") ================= -->
